@@ -1,23 +1,55 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import DefaultLayout from '../components/DefaultLayout.vue';
+import GuestLayout from '../components/GuestLayout.vue'
+import Home from '../views/Home.vue';
+import MealsByName from '../views/MealsByName.vue';
+import MealsByIngredients from '../views/MealsByIngredients.vue';
+import MealsByLetter from '../views/MealsByLetter.vue';
+import MealDetails from '../views/MealDetails.vue';
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+
+const routes = [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+        path:'/',
+        component:DefaultLayout,
+        children:[
+            {
+                path: '/',
+                name: "home",
+                component: Home
+            },
+            {
+                path: '/by-name/:name?',
+                name: "byName",
+                component: MealsByName
+            },
+            {
+                path: '/by-Letter/:Letter?',
+                name: "byLetter",
+                component: MealsByLetter
+            },
+            {
+                path: '/by-ingredients/:ingredients?',
+                name: "byIngredients",
+                component: MealsByIngredients
+            },
+            {
+                path:'/meal/:id',
+                name:'mealDetails',
+                component:MealDetails
+            }
+
+        ]
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
+     path :'/guest'   ,
+     component:GuestLayout
+    }    
+]
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes
 })
 
-export default router
+export default router;
