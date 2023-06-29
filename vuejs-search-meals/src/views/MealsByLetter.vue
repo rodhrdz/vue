@@ -4,26 +4,28 @@
             <input type="text" class="rounded border-2 border-gray-200 w-full" placeholder="Search for Meals">
             <div class="flex justify-center gap-2 mt-2">
                 <router-link :to="{ name: 'byLetter', params: { letter } }" v-for="letter of letters" :key="letter">
-                    {{ letter }}
+                    <h1
+                     class="text-3xl transition-colors text-orange-400 font-bold hover:bg-orange-100 hover:text-black">
+                        {{ letter }}
+                    </h1>
+                    
                 </router-link>
             </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 p-8">
-            <MealItem v-for="meal of meals" :key="meal.id" :meal="meal"/>
-        </div>
+        <Meals :meals="meals"></Meals>
     </div>
 </template>
 <script setup>
 import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import store from '../store'
-import MealItem from "../components/MealItem.vue";
+import Meals from "../components/Meals.vue";
 
 const route = useRoute();
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split("");
 const meals = computed(() => store.state.mealsByLetter)
 
-watch(route,() =>{
+watch(route, () => {
     store.dispatch('searchMealsByLetter', route.params.letter)
 
 })

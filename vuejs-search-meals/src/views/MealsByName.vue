@@ -1,26 +1,34 @@
 <template>
     <div>
-        <div class="p-8 pb-0">
-            <input type="text" v-model="keyword" class="rounded border-2 border-gray-200 w-full"
+        <div class="p-8">
+            <input type="text" v-model="keyword" class="rounded border-2 bg=white border-gray-200 w-full"
                 placeholder="Search for Meals" @change="searchMeals">
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 p-8">
-            <MealItem v-for="meal of meals" :key="meal.id" :meal="meal"></MealItem>
-        </div>
+       
+        <Meals :meals="meals" ></Meals>
     </div>
+    
 </template>
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import store from "../store/index.js";
 import { useRoute } from "vue-router"
-import YoutubeButton from "../components/YoutubeButton.vue";
-import MealItem from "../components/MealItem.vue";
+import Meals from "../components/Meals.vue";
 
 const route = useRoute();
 const keyword = ref('');
 const meals = computed(() => store.state.searchMeals);
+
+
 function searchMeals() {
-    store.dispatch('searchMeals', keyword.value);
+    if (keyword.value) {
+        store.dispatch('searchMeals', keyword.value);
+
+    }
+    else{
+        store.commit('setSearchedMeals', []);
+
+    }
 
 }
 onMounted(() => {
